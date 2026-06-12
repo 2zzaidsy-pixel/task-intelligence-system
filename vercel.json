@@ -1,0 +1,31 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "/*.html",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "/css/*.css",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "/js/*.js",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "/config/*.js",
+      "use": "@vercel/static"
+    }
+  ],
+  "routes": [
+    { "src": "/", "dest": "/index.html" },
+    { "src": "/login", "dest": "/login.html" },
+    { "src": "/dashboard", "dest": "/index.html" },
+    { "src": "/tasks", "dest": "/tasks.html" },
+    { "src": "/analytics", "dest": "/analytics.html" }
+  ],
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/$1" }
+  ]
+}

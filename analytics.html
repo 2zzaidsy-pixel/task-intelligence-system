@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>التحليلات - Task Intelligence System</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+</head>
+<body>
+  <div class="app-layout">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-logo">TI</div>
+        <div class="sidebar-brand">
+          Task Intelligence
+          <span>نظام إدارة المهام</span>
+        </div>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-title">القائمة</div>
+          <a class="nav-item" href="index.html">
+            <span class="nav-icon">📊</span> لوحة التحكم
+          </a>
+          <a class="nav-item" href="tasks.html">
+            <span class="nav-icon">📋</span> المهام
+          </a>
+          <a class="nav-item active" href="analytics.html">
+            <span class="nav-icon">📈</span> التحليلات
+          </a>
+        </div>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="nav-item" onclick="handleLogout()">
+          <span class="nav-icon">🚪</span> تسجيل الخروج
+        </div>
+      </div>
+    </aside>
+
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+          <h1 class="page-title">التحليلات</h1>
+        </div>
+        <div class="topbar-right">
+          <span class="topbar-date" id="currentDate"></span>
+          <div class="user-avatar" onclick="toggleUserDropdown()">
+            <span id="avatarLetter">U</span>
+            <div class="user-dropdown" id="userDropdown">
+              <div class="user-dropdown-item" id="userEmail" style="color:var(--text-muted);cursor:default;"></div>
+              <div class="user-dropdown-item danger" onclick="handleLogout()">🚪 تسجيل الخروج</div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <div class="page-content">
+        <!-- Productivity Score -->
+        <div class="analytics-grid">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">درجة الإنتاجية</h3>
+            </div>
+            <div class="score-container">
+              <div class="score-circle" id="productivityCircle">
+                <svg width="160" height="160">
+                  <circle class="bg" cx="80" cy="80" r="65"></circle>
+                  <circle class="progress" cx="80" cy="80" r="65" stroke-dasharray="408.4" stroke-dashoffset="408.4"></circle>
+                </svg>
+                <div class="center">
+                  <div class="value" id="prodScoreValue">0</div>
+                  <div class="label">من 100</div>
+                </div>
+              </div>
+              <div class="score-details">
+                <div class="score-detail">
+                  <div class="score-detail-value" id="detailCommitment">0%</div>
+                  <div class="score-detail-label">الالتزام</div>
+                </div>
+                <div class="score-detail">
+                  <div class="score-detail-value" id="detailCompletion">0%</div>
+                  <div class="score-detail-label">الإنجاز</div>
+                </div>
+                <div class="score-detail">
+                  <div class="score-detail-value" id="detailConsistency">0%</div>
+                  <div class="score-detail-label">الاتساق</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">نسب الإنجاز</h3>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:20px;padding:16px 0;">
+              <div>
+                <div class="flex-between mb-8">
+                  <span style="font-size:0.85rem;color:var(--text-secondary);">يومي</span>
+                  <span style="font-size:0.9rem;font-weight:600;" id="dailyRateLabel">0%</span>
+                </div>
+                <div class="progress-bar-wrapper" style="height:12px;">
+                  <div class="progress-bar-fill" id="dailyRateBar" style="width:0%;"></div>
+                </div>
+              </div>
+              <div>
+                <div class="flex-between mb-8">
+                  <span style="font-size:0.85rem;color:var(--text-secondary);">أسبوعي</span>
+                  <span style="font-size:0.9rem;font-weight:600;" id="weeklyRateLabel">0%</span>
+                </div>
+                <div class="progress-bar-wrapper" style="height:12px;">
+                  <div class="progress-bar-fill success" id="weeklyRateBar" style="width:0%;"></div>
+                </div>
+              </div>
+              <div>
+                <div class="flex-between mb-8">
+                  <span style="font-size:0.85rem;color:var(--text-secondary);">شهري</span>
+                  <span style="font-size:0.9rem;font-weight:600;" id="monthlyRateLabel">0%</span>
+                </div>
+                <div class="progress-bar-wrapper" style="height:12px;">
+                  <div class="progress-bar-fill" id="monthlyRateBar" style="width:0%;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Charts Row -->
+        <div class="analytics-grid">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">المهام المنجزة يومياً</h3>
+            </div>
+            <div class="chart-container">
+              <canvas id="dailyChart"></canvas>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">توزيع المهام حسب التصنيف</h3>
+            </div>
+            <div class="chart-container">
+              <canvas id="categoryChart"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <div class="analytics-grid">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">المهام المنجزة أسبوعياً</h3>
+            </div>
+            <div class="chart-container">
+              <canvas id="weeklyChart"></canvas>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">المهام المنجزة شهرياً</h3>
+            </div>
+            <div class="chart-container">
+              <canvas id="monthlyChart"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Smart Suggestions -->
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">اقتراحات لتحسين الإنتاجية</h3>
+          </div>
+          <div id="suggestionsContainer">
+            <div class="loading"><div class="spinner"></div></div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script src="config/supabase.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/analytics.js"></script>
+</body>
+</html>
