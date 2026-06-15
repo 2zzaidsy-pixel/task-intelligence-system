@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>THE SYSTEM - Task Intelligence</title>
+  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+  <script src="config/supabase.js"></script>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/challenges.css">
+  <link rel="stylesheet" href="css/system.css">
+</head>
+<body>
+  <div class="app-layout">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-logo">S</div>
+        <div class="sidebar-brand">
+          THE SYSTEM
+          <span>Task Intelligence</span>
+        </div>
+      </div>
+      <nav class="sidebar-nav" id="sidebarNav">
+        <div class="nav-section">
+          <div class="nav-section-title">الرئيسية</div>
+          <a href="index.html" class="nav-item" data-page="index">
+            <span class="nav-icon">📊</span> لوحة التحكم
+          </a>
+          <a href="system.html" class="nav-item active" data-page="system">
+            <span class="nav-icon">⚡</span> THE SYSTEM
+          </a>
+          <a href="tasks.html" class="nav-item" data-page="tasks">
+            <span class="nav-icon">📋</span> المهام
+          </a>
+          <a href="challenges.html" class="nav-item" data-page="challenges">
+            <span class="nav-icon">🏆</span> التحديات
+          </a>
+          <a href="analytics.html" class="nav-item" data-page="analytics">
+            <span class="nav-icon">📈</span> التحليلات
+          </a>
+        </div>
+        <div class="nav-section" id="adminNav" style="display:none;">
+          <div class="nav-section-title">الإدارة</div>
+          <a href="admin.html" class="nav-item" data-page="admin">
+            <span class="nav-icon">⚙️</span> لوحة المشرف
+          </a>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">الحساب</div>
+          <a href="profile.html" class="nav-item" data-page="profile">
+            <span class="nav-icon">👤</span> الملف الشخصي
+          </a>
+        </div>
+      </nav>
+      <div class="sidebar-footer" id="sidebarUser">
+        <div class="nav-item" style="cursor:default;">
+          <span class="nav-icon">👤</span>
+          <span id="sidebarUserName">...</span>
+        </div>
+        <div class="nav-item" onclick="handleLogout()" style="color:var(--danger);">
+          <span class="nav-icon">🚪</span> تسجيل خروج
+        </div>
+      </div>
+    </aside>
+
+    <div class="sidebar-overlay" onclick="closeSidebar()"></div>
+
+    <div class="main-content">
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+          <h1 class="page-title">⚡ THE SYSTEM</h1>
+        </div>
+        <div class="topbar-right">
+          <span class="topbar-date" id="currentDate"></span>
+          <div class="user-avatar" id="userAvatar" onclick="toggleDropdown(event)">
+            <span id="avatarLetter">U</span>
+            <div class="user-dropdown" id="userDropdown">
+              <div class="user-dropdown-item" id="userEmail" style="color:var(--text-muted);cursor:default;"></div>
+              <div class="user-dropdown-item danger" onclick="handleLogout()">🚪 تسجيل الخروج</div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <div class="page-content">
+        <!-- System Header -->
+        <div class="system-header">
+          <div class="system-header-content">
+            <div class="system-title">THE SYSTEM</div>
+            <div class="system-subtitle">نظام تطوير الذات - تتبع تطورك ورحلة صعودك</div>
+          </div>
+        </div>
+
+        <!-- Level & Rank Card -->
+        <div class="level-card" id="levelCard">
+          <div class="level-card-header">
+            <div class="level-badge level-badge-lg" id="systemLevelBadge">1</div>
+            <div>
+              <div style="font-size:1.8rem;font-weight:800;" id="systemRankDisplay">E Rank</div>
+              <div style="font-size:0.8rem;color:var(--text-muted);" id="systemRankTitle">مبتدئ</div>
+            </div>
+          </div>
+          <div class="level-card-xp">
+            <strong id="systemCurrentXp">0</strong> / <span id="systemXpForNext">100</span> XP
+          </div>
+          <div class="xp-bar-wrapper mt-8">
+            <div class="xp-bar-fill" id="systemXpBar" style="width:0%;"></div>
+          </div>
+          <div id="systemLevelUpSpace" class="mt-16" style="display:none;">
+            <div style="color:var(--success);font-size:0.85rem;font-weight:600;">🎉 مبروك! يمكنك رفع المستوى</div>
+          </div>
+        </div>
+
+        <!-- Stats Grid -->
+        <div class="system-stats" id="systemStatsGrid">
+          <div class="system-stat">
+            <div class="system-stat-icon">⚡</div>
+            <div class="system-stat-value" id="statTotalXp">0</div>
+            <div class="system-stat-label">إجمالي XP</div>
+          </div>
+          <div class="system-stat">
+            <div class="system-stat-icon">📋</div>
+            <div class="system-stat-value" id="statCompletedQuests">0</div>
+            <div class="system-stat-label">المهام المنجزة</div>
+          </div>
+          <div class="system-stat">
+            <div class="system-stat-icon">🏆</div>
+            <div class="system-stat-value" id="statCompletedChallenges">0</div>
+            <div class="system-stat-label">التحديات المكتملة</div>
+          </div>
+          <div class="system-stat">
+            <div class="system-stat-icon">🎖️</div>
+            <div class="system-stat-value" id="statBadges">0</div>
+            <div class="system-stat-label">الشارات</div>
+          </div>
+          <div class="system-stat">
+            <div class="system-stat-icon">🏅</div>
+            <div class="system-stat-value" id="statAchievements">0</div>
+            <div class="system-stat-label">الإنجازات</div>
+          </div>
+          <div class="system-stat">
+            <div class="streak-flame" id="systemStreakBadge">
+              <span class="flame-icon">🔥</span>
+              <span id="statStreakDays">0</span> يوم
+            </div>
+            <div class="system-stat-label" style="margin-top:8px;">الاستمرارية</div>
+            <div class="system-stat-label" style="font-size:0.65rem;color:var(--text-muted);">
+              الأفضل: <span id="statBestStreak">0</span> يوم
+            </div>
+          </div>
+        </div>
+
+        <!-- Active Quests -->
+        <div class="card mb-24">
+          <div class="card-header">
+            <h3 class="card-title">🎯 المهام النشطة (Quests)</h3>
+          </div>
+          <div id="activeQuestsContainer">
+            <div class="loading"><div class="spinner"></div></div>
+          </div>
+        </div>
+
+        <!-- Active Challenges -->
+        <div class="card mb-24">
+          <div class="card-header">
+            <h3 class="card-title">🏆 التحديات النشطة</h3>
+          </div>
+          <div id="activeChallengesContainer">
+            <div class="loading"><div class="spinner"></div></div>
+          </div>
+        </div>
+
+        <!-- Achievements -->
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">🏅 الإنجازات</h3>
+            <span class="badge badge-primary" id="achievementCount">0/0</span>
+          </div>
+          <div id="achievementsContainer">
+            <div class="loading"><div class="spinner"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script src="js/app.js"></script>
+  <script src="js/xp-system.js"></script>
+  <script src="js/system.js"></script>
+</body>
+</html>

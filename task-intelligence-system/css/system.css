@@ -1,0 +1,407 @@
+/* ===========================================
+   THE SYSTEM - Core Stylesheet
+   XP, Levels, Ranks, Quests, Achievements
+   =========================================== */
+
+/* Rank Colors */
+.rank-E { color: #22c55e; }
+.rank-D { color: #3b82f6; }
+.rank-C { color: #a855f7; }
+.rank-B { color: #f59e0b; }
+.rank-A { color: #ef4444; }
+.rank-S { color: #06b6d4; }
+.rank-SS { color: #f97316; }
+.rank-National { background: linear-gradient(90deg, #f59e0b, #ef4444, #a855f7); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+.rank-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.rank-badge.rank-E { background: rgba(34,197,94,0.15); color: #22c55e; border: 1px solid rgba(34,197,94,0.3); }
+.rank-badge.rank-D { background: rgba(59,130,246,0.15); color: #3b82f6; border: 1px solid rgba(59,130,246,0.3); }
+.rank-badge.rank-C { background: rgba(168,85,247,0.15); color: #a855f7; border: 1px solid rgba(168,85,247,0.3); }
+.rank-badge.rank-B { background: rgba(245,158,11,0.15); color: #f59e0b; border: 1px solid rgba(245,158,11,0.3); }
+.rank-badge.rank-A { background: rgba(239,68,68,0.15); color: #ef4444; border: 1px solid rgba(239,68,68,0.3); }
+.rank-badge.rank-S { background: rgba(6,182,212,0.15); color: #06b6d4; border: 1px solid rgba(6,182,212,0.3); }
+.rank-badge.rank-SS { background: rgba(249,115,22,0.15); color: #f97316; border: 1px solid rgba(249,115,22,0.3); }
+.rank-badge.rank-National { background: rgba(245,158,11,0.15); border: 1px solid rgba(245,158,11,0.3); }
+.rank-badge.rank-National span { background: linear-gradient(90deg, #f59e0b, #ef4444, #a855f7); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+/* XP Bar */
+.xp-bar-wrapper {
+  width: 100%;
+  height: 12px;
+  background: var(--bg-primary);
+  border-radius: 6px;
+  overflow: hidden;
+  position: relative;
+}
+.xp-bar-fill {
+  height: 100%;
+  border-radius: 6px;
+  background: linear-gradient(90deg, #3b82f6, #8b5cf6, #06b6d4);
+  transition: width 1s ease;
+  position: relative;
+}
+.xp-bar-fill::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  animation: shimmer 2s infinite;
+}
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* Level Badge */
+.level-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary), #8b5cf6);
+  color: white;
+  font-weight: 800;
+  font-size: 1.1rem;
+  box-shadow: 0 0 20px rgba(59,130,246,0.3);
+}
+
+.level-badge-lg {
+  width: 72px;
+  height: 72px;
+  font-size: 1.8rem;
+  box-shadow: 0 0 30px rgba(59,130,246,0.4);
+}
+
+/* THE SYSTEM Page Layout */
+.system-header {
+  text-align: center;
+  padding: 32px 20px;
+  margin-bottom: 24px;
+  background: linear-gradient(135deg, #0f172a, #1e3a5f);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-lg);
+  position: relative;
+  overflow: hidden;
+}
+.system-header::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -20%;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(59,130,246,0.08) 0%, transparent 70%);
+  border-radius: 50%;
+}
+.system-header::after {
+  content: '';
+  position: absolute;
+  bottom: -50%;
+  right: -20%;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(139,92,246,0.08) 0%, transparent 70%);
+  border-radius: 50%;
+}
+.system-header-content {
+  position: relative;
+  z-index: 1;
+}
+.system-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-bottom: 4px;
+  background: linear-gradient(135deg, #3b82f6, #8b5cf6, #06b6d4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.system-subtitle {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+/* System Stats Grid */
+.system-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
+  margin-bottom: 24px;
+}
+.system-stat {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  padding: 16px;
+  text-align: center;
+  transition: var(--transition);
+}
+.system-stat:hover {
+  border-color: var(--primary);
+  transform: translateY(-2px);
+}
+.system-stat-icon {
+  font-size: 1.5rem;
+  margin-bottom: 6px;
+}
+.system-stat-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+.system-stat-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+/* Level Progress Card */
+.level-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  padding: 24px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+.level-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+.level-card-xp {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+.level-card-xp strong {
+  color: var(--text-primary);
+}
+
+/* Quest Styles */
+.quest-item {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: var(--transition);
+  margin-bottom: 8px;
+}
+.quest-item:hover {
+  border-color: var(--primary);
+  transform: translateX(-2px);
+}
+.quest-item.completed {
+  opacity: 0.5;
+}
+.quest-item.completed .quest-title {
+  text-decoration: line-through;
+  color: var(--text-muted);
+}
+.quest-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--primary-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+.quest-icon.completed-icon { background: var(--success-light); }
+.quest-content { flex: 1; min-width: 0; }
+.quest-title { font-size: 0.9rem; font-weight: 600; color: var(--text-primary); margin-bottom: 2px; }
+.quest-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.quest-meta span { font-size: 0.75rem; color: var(--text-muted); }
+.quest-reward { font-size: 0.75rem; color: var(--warning); font-weight: 600; }
+.quest-difficulty { font-size: 0.65rem; padding: 2px 8px; border-radius: 10px; font-weight: 600; }
+.quest-difficulty.easy { background: var(--success-light); color: var(--success); }
+.quest-difficulty.medium { background: var(--warning-light); color: var(--warning); }
+.quest-difficulty.hard { background: var(--danger-light); color: var(--danger); }
+
+/* Achievement Cards */
+.achievement-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 12px;
+}
+.achievement-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: var(--transition);
+}
+.achievement-card:hover {
+  border-color: var(--warning);
+  transform: translateY(-2px);
+}
+.achievement-card.locked {
+  opacity: 0.4;
+  filter: grayscale(0.7);
+}
+.achievement-icon {
+  font-size: 2rem;
+  width: 48px;
+  text-align: center;
+  flex-shrink: 0;
+}
+.achievement-info { flex: 1; }
+.achievement-name { font-size: 0.9rem; font-weight: 600; margin-bottom: 2px; }
+.achievement-desc { font-size: 0.75rem; color: var(--text-muted); }
+.achievement-date { font-size: 0.65rem; color: var(--text-muted); margin-top: 2px; }
+
+/* Badge Rarity */
+.badge-rarity {
+  font-size: 0.55rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  display: inline-block;
+}
+.badge-rarity.common { color: var(--text-muted); background: rgba(100,116,139,0.2); }
+.badge-rarity.rare { color: #3b82f6; background: rgba(59,130,246,0.15); }
+.badge-rarity.epic { color: #a855f7; background: rgba(168,85,247,0.15); }
+.badge-rarity.legendary { color: #f59e0b; background: rgba(245,158,11,0.15); }
+.badge-rarity.mythic {
+  background: linear-gradient(90deg, rgba(239,68,68,0.2), rgba(168,85,247,0.2), rgba(59,130,246,0.2));
+  color: #f59e0b;
+}
+
+.rarity-border.rare { border-color: #3b82f6 !important; box-shadow: 0 0 10px rgba(59,130,246,0.2); }
+.rarity-border.epic { border-color: #a855f7 !important; box-shadow: 0 0 10px rgba(168,85,247,0.2); }
+.rarity-border.legendary { border-color: #f59e0b !important; box-shadow: 0 0 15px rgba(245,158,11,0.3); }
+.rarity-border.mythic {
+  border-color: #ef4444 !important;
+  box-shadow: 0 0 20px rgba(168,85,247,0.3);
+  animation: mythicGlow 2s ease-in-out infinite;
+}
+
+@keyframes mythicGlow {
+  0%, 100% { box-shadow: 0 0 15px rgba(59,130,246,0.3); }
+  50% { box-shadow: 0 0 25px rgba(168,85,247,0.5); }
+}
+
+/* Waitlist Badge */
+.waitlist-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  background: rgba(139,92,246,0.15);
+  color: #a855f7;
+  border: 1px solid rgba(139,92,246,0.3);
+}
+
+/* Remaining Seats */
+.seats-remaining {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+.seats-remaining strong {
+  color: var(--primary);
+}
+.seats-remaining.urgent strong {
+  color: var(--danger);
+}
+
+/* Streak Flame */
+.streak-flame {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  background: rgba(245,158,11,0.1);
+  color: var(--warning);
+  border: 1px solid rgba(245,158,11,0.2);
+}
+.streak-flame .flame-icon {
+  font-size: 1rem;
+  animation: flameFlicker 0.5s ease-in-out infinite alternate;
+}
+@keyframes flameFlicker {
+  from { transform: scale(1); }
+  to { transform: scale(1.15); }
+}
+
+/* Level Up Animation */
+.level-up-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.7);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 3000;
+  backdrop-filter: blur(8px);
+}
+.level-up-overlay.show { display: flex; }
+.level-up-modal {
+  text-align: center;
+  animation: levelUpPop 0.5s ease;
+}
+@keyframes levelUpPop {
+  0% { transform: scale(0.5); opacity: 0; }
+  70% { transform: scale(1.1); }
+  100% { transform: scale(1); opacity: 1; }
+}
+.level-up-icon { font-size: 4rem; margin-bottom: 12px; }
+.level-up-text { font-size: 2rem; font-weight: 800; color: var(--primary); margin-bottom: 8px; }
+.level-up-sub { color: var(--text-secondary); font-size: 1rem; margin-bottom: 20px; }
+
+/* XP Toast */
+.xp-toast {
+  position: fixed;
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, #1e3a5f, #0f172a);
+  border: 1px solid var(--warning);
+  border-radius: var(--border-radius);
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  z-index: 2500;
+  animation: slideDown 0.3s ease;
+  box-shadow: 0 0 30px rgba(245,158,11,0.2);
+  pointer-events: none;
+}
+.xp-toast-icon { font-size: 1.5rem; }
+.xp-toast-text { font-size: 0.9rem; font-weight: 600; color: var(--warning); }
+.xp-toast-desc { font-size: 0.8rem; color: var(--text-secondary); }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .system-title { font-size: 1.8rem; }
+  .system-stats { grid-template-columns: repeat(2, 1fr); }
+  .achievement-grid { grid-template-columns: 1fr; }
+  .level-badge-lg { width: 56px; height: 56px; font-size: 1.4rem; }
+}
