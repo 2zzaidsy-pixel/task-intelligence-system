@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>الملف الشخصي - THE SYSTEM</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/challenges.css">
+  <link rel="stylesheet" href="css/system.css">
+  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+</head>
+<body>
+  <div class="app-layout">
+    <main class="main-content">
+      <header class="topbar">
+        <div class="topbar-left">
+          <div class="topbar-logo">S</div>
+          <h1 class="page-title">👤 الملف الشخصي</h1>
+        </div>
+        <div class="topbar-right">
+          <span class="topbar-date" id="currentDate"></span>
+          <div class="user-avatar" onclick="toggleDropdown(event)">
+            <span id="avatarLetter">U</span>
+            <div class="user-dropdown" id="userDropdown">
+              <div class="user-dropdown-item" id="userEmail" style="color:var(--text-muted);cursor:default;"></div>
+              <div class="user-dropdown-item danger" onclick="handleLogout()">🚪 تسجيل الخروج</div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <div class="page-content">
+        <div id="profileContent">
+          <div class="loading"><div class="spinner"></div></div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <div class="toast-container" id="toastContainer"></div>
+
+  <div class="roadmap-overlay" id="roadmapOverlay">
+    <div class="roadmap-modal">
+      <div class="roadmap-header">
+        <div class="roadmap-title-wrap">
+          <span class="roadmap-title-icon">🗺️</span>
+          <span class="roadmap-title-text">Progression Roadmap</span>
+        </div>
+        <button class="roadmap-close" onclick="closeRoadmap()">✕</button>
+      </div>
+      <div id="roadmapBody"></div>
+    </div>
+  </div>
+
+  <nav class="bottom-nav">
+    <div class="bottom-nav-inner">
+      <a href="index.html" class="bottom-nav-item" data-page="index"><span class="bnav-icon">📊</span><span class="bnav-label">الرئيسية</span></a>
+      <a href="system.html" class="bottom-nav-item" data-page="system"><span class="bnav-icon">⚡</span><span class="bnav-label">النظام</span></a>
+      <a href="tasks.html" class="bottom-nav-item" data-page="tasks"><span class="bnav-icon">📋</span><span class="bnav-label">المهام</span></a>
+      <a href="challenges.html" class="bottom-nav-item" data-page="challenges"><span class="bnav-icon">🏆</span><span class="bnav-label">التحديات</span></a>
+      <a href="analytics.html" class="bottom-nav-item" data-page="analytics"><span class="bnav-icon">📈</span><span class="bnav-label">التحليلات</span></a>
+      <a href="profile.html" class="bottom-nav-item" data-page="profile"><span class="bnav-icon">👤</span><span class="bnav-label">الملف</span></a>
+    </div>
+  </nav>
+
+  <script src="config/supabase.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/xp-system.js"></script>
+  <script src="js/profile.js"></script>
+</body>
+</html>
